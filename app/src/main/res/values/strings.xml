@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">MyBank</string>
+    <string name="title_activity_my_bank">MyBank</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- Login page strings-->
+    <string name="login_btn">SIGNIN</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+
+    <!-- Navigation drawer header-->
+    <string name="nav_username">User fullname</string>
+    <string name="nav_accountNo">Account Number</string>
+    <string name="nav_accountType">Account Type</string>
+    <string name="nav_bankLogo">Bank Logo</string>
+
+    <!-- Navigation drawer strings-->
+    <string name="nav_home">Home</string>
+    <string name="nav_transaction">Transaction</string>
+    <string name="nav_statement">Statement</string>
+    <string name="nav_branchAtm">Branches/ATM</string>
+    <string name="nav_communicate">Communicate</string>
+    <string name="nav_security">Security Tips</string>
+    <string name="nav_help">Help</string>
+    <string name="nav_contactUs">Contact Us</string>
+
+
+    <string name="title_activity_branch_atm">Map</string>
 </resources>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/nav_home" />
+        <item
+            android:id="@+id/nav_transaction"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/nav_transaction" />
+        <item
+            android:id="@+id/nav_statement"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/nav_statement" />
+        <item
+            android:id="@+id/nav_branchatm"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/nav_branchAtm" />
+    </group>
+
+    <item android:title="@string/nav_communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_security"
+                android:icon="@drawable/ic_menu_share"
+                android:title="@string/nav_security" />
+            <item
+                android:id="@+id/nav_help"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/nav_help" />
+            <item
+                android:id="@+id/nav_contactUs"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="@string/nav_contactUs"
+                />
+        </menu>
+    </item>
+
+</menu>
