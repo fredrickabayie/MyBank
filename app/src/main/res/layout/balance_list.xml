@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_marginBottom="20sp"
+    android:layout_width="match_parent"
+    android:layout_marginTop="30sp"
+    android:layout_height="88sp">
+
+    <TextView
+        android:id="@+id/list_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dip"
+        android:textColor="#000"
+        android:typeface="monospace"
+        android:layout_marginStart="10sp"
+        android:layout_marginLeft="10sp"
+        android:textSize="16sp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="meal name"
+        android:textStyle="bold"/>
+
+</RelativeLayout>

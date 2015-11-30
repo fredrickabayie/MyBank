@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     Button login_btn;
     EditText username, password;
+//    ProgressBar progressBar;
 
     private static final String TAG_RESULT = "result";
     private static final String TAG_USERNAME = "username";
@@ -37,6 +40,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG_ID = "user_id";
 
     SessionManager sessionManager;
+
+    private ProgressDialog pDialog;
+
+    private RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +61,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
+
+        relativeLayout = (RelativeLayout) findViewById(R.id.relativelayout);
+
     }
 
 
@@ -65,11 +75,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
+    private class DownloadWebPageTask extends AsyncTask<String, Integer, String> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            login_btn.setEnabled(false);
+            pDialog = new ProgressDialog(MainActivity.this);
+            pDialog.setMessage("Please wait...");
+            pDialog.setCancelable(false);
+            pDialog.show();
         }
 
         /**
@@ -107,8 +122,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         @Override
-        protected void onProgressUpdate(Void... values) {
+        protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
+//            progressBar.setProgress(values[0]);
             System.out.println(values[0]);
         }
 
@@ -134,26 +150,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     sessionManager.createLoginSession(user, id);
 
+                    if (pDialog.isShowing())
+                        pDialog.dismiss();
+
                     Intent home = new Intent(MainActivity.this, MyBank.class);
                     startActivity(home);
                     finish();
                 }
                 else {
-//                    String msg = jsonObj.getString("message");
+                    String msg = jsonObj.getString("message");
 //                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
 
-//                    Snackbar snackbar = Snackbar
-//                            .make(relativeLayout, msg, Snackbar.LENGTH_SHORT);
+                    Snackbar snackbar = Snackbar
+                            .make(relativeLayout, msg, Snackbar.LENGTH_SHORT);
 
                     // Changing message text color
 //                    snackbar.setActionTextColor(Color.RED);
 
                     // Changing action button text color
-//                    View sbView = snackbar.getView();
-//                    TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-//                    textView.setTextColor(Color.RED);
+                    View sbView = snackbar.getView();
+                    TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setTextColor(Color.RED);
 //
-//                    snackbar.show();
+                    snackbar.show();
 
                 }
 

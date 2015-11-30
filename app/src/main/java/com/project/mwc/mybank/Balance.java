@@ -3,11 +3,31 @@ package com.project.mwc.mybank;
 import android.app.ListFragment;
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -18,11 +38,24 @@ import android.view.ViewGroup;
  * Use the {@link Balance#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Balance extends Fragment {
+public class Balance extends ListFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private static final String TAG_RESULTID = "result";
+    private static final String TAG_BALANCE = "balance";
+    private static final String TAG_AMOUNT = "amount";
+
+
+    ArrayList<HashMap<String, String>> balanceList;
+//    private SwipeRefreshLayout swipeRefreshLayout;
+
+    JSONArray balances = null;
+
+    ListView listView;
+    ArrayAdapter<String> adapter;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -58,6 +91,8 @@ public class Balance extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+            balanceList = new ArrayList<>();
+
         }
     }
 
@@ -65,6 +100,7 @@ public class Balance extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        loadHistory();
         return inflater.inflate(R.layout.fragment_balance, container, false);
     }
 
@@ -105,5 +141,122 @@ public class Balance extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void loadHistory ( ) {
+        DownloadWebPageTask task = new DownloadWebPageTask();
+//        historyList.clear();
+        task.execute("http://cs.ashesi.edu.gh/~csashesi/class2016/fredrick-abayie/mobileweb/onga_mwc/php/onga.php?cmd=onga_mwc_orders_history&user_id=19882016");
+    }
+
+
+    private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
+
+
+        /**
+         * Functiont to open an http connection
+         *
+         * @param urls The url to be sent
+         * @return Returning the response
+         */
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            for (String url1 : urls) {
+                try {
+                    URL url = new URL(url1);
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    System.out.println(url);
+                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                    BufferedReader buffer = new BufferedReader(
+                            new InputStreamReader(in));
+                    String s = "";
+                    while ((s = buffer.readLine()) != null) {
+                        System.out.println(s);
+                        response += s;
+                    }
+                    System.out.println(response);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+//                    assert urlConnection != null;
+                    urlConnection.disconnect();
+                }
+            }
+            if(response != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String resultID = jsonObject.getString(TAG_RESULTID);
+                    if(resultID.equals("1")) {
+                        balances = jsonObject.getJSONArray(TAG_BALANCE);
+//                        for (int i = 0; i < users.length(); i++) {
+//                            JSONObject jObj = users.getJSONObject(i);
+
+                            String balance = jsonObject.getString(TAG_BALANCE);
+//                            String meal_price = "GH\u20B5 "+jObj.getString(TAG_MEALPRICE);
+//                            String order_date = jObj.getString(TAG_ORDERDATE);
+//                            String order_time = jObj.getString(TAG_ORDERTIME);
+//                            String order_status = convert_status(jObj.getString(TAG_ORDERSTATUS));
+
+                            HashMap<String, String> history = new HashMap<>();
+
+                            history.put(TAG_BALANCE, balance);
+//                            history.put(TAG_MEALPRICE, meal_price);
+//                            history.put(TAG_ORDERDATE, order_date);
+//                            history.put(TAG_ORDERTIME, order_time);
+//                            history.put(TAG_ORDERSTATUS, order_status);
+
+
+                            balanceList.add(history);
+                            System.out.println(balanceList);
+                        }
+//                    }
+
+                } catch (JSONException jsonex) {
+                    jsonex.printStackTrace();
+                }
+
+            }
+
+            return response;
+
+        }
+
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+            System.out.println(values[0]);
+        }
+
+
+        /**
+         * Function to get result from the http post
+         *
+         * @param result Result from the post
+         */
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+//            setListAdapter(null);
+            ListAdapter adapter = new SimpleAdapter(
+                    getActivity(), balanceList,
+                    R.layout.balance_list, new String[] { TAG_BALANCE },
+                    new int[] { R.id.list_balance } );
+
+            setListAdapter(adapter);
+//            swipeRefreshLayout.setRefreshing(false);
+
+        }
+    }
+
+    private String convert_status(String status){
+        String state = "ready";
+        if(status.equals("not")){
+            state="not ready";
+        }
+        return state;
     }
 }

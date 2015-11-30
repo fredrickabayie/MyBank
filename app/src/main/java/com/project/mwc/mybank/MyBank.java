@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 public class MyBank extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        Statement.OnFragmentInteractionListener {
+        Statement.OnFragmentInteractionListener, Balance.OnFragmentInteractionListener {
 
     SessionManager sessionManager;
 
@@ -87,7 +87,7 @@ public class MyBank extends AppCompatActivity
         Fragment fragment = null;
 
         if (id == R.id.nav_home) {
-//            fragment = new Balance();
+            fragment = new Balance();
             title = "Home";
         } else if (id == R.id.nav_transaction) {
 

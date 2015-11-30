@@ -18,7 +18,8 @@
         android:layout_height="fill_parent"
         android:layout_marginTop="10sp"
         android:orientation="vertical"
-        android:paddingTop="10dp">
+        android:paddingTop="10dp"
+        android:id="@+id/linearLayout">
 
 
         <!--<ImageView-->
@@ -92,14 +93,6 @@
             android:layout_marginTop="30sp"
             android:text="@string/moto"
             android:id="@+id/textView"
-            android:layout_gravity="center_horizontal" />
-
-        <ImageView
-            android:layout_width="20sp"
-            android:contentDescription="connection_status"
-            android:layout_height="20sp"
-            android:layout_marginTop="10sp"
-            android:id="@+id/connect_status"
             android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
