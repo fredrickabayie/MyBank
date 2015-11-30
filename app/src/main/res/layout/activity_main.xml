@@ -3,16 +3,105 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#fff"
+    android:id="@+id/relativelayout"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     tools:context="com.project.mwc.mybank.MainActivity">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="60sp"
-        android:id="@+id/login_btn"
-        android:text="@string/login_btn"
-        android:onClick="loginHandler"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="10sp"
+        android:orientation="vertical"
+        android:paddingTop="10dp">
+
+
+        <!--<ImageView-->
+            <!--android:layout_width="200sp"-->
+            <!--android:contentDescription="login_logo"-->
+            <!--android:layout_height="200sp"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:src="@drawable/common_plus_signin_btn_icon_light_normal" />-->
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bank"
+            android:layout_gravity="center_horizontal" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="40sp"
+            android:inputType="textPersonName"
+            android:hint="@string/username_hint"
+            android:ems="10"
+            android:textSize="15sp"
+            android:layout_marginTop="40sp"
+            android:paddingStart="15sp"
+            android:paddingEnd="15sp"
+            android:paddingLeft="15sp"
+            android:typeface="monospace"
+            android:id="@+id/username" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="40sp"
+            android:inputType="textPassword"
+            android:hint="@string/password_hint"
+            android:textSize="15sp"
+            android:ems="10"
+            android:layout_marginTop="20sp"
+            android:paddingStart="15sp"
+            android:paddingEnd="15sp"
+            android:paddingLeft="15sp"
+            android:typeface="monospace"
+            android:id="@+id/password" />
+
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/remember_login"
+            android:id="@+id/remember_login"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="@string/login_btn"
+            android:textSize="15sp"
+            android:onClick="loginHandler"
+            android:layout_marginTop="20sp"
+            android:typeface="monospace"
+            android:textStyle="bold"
+            android:id="@+id/login_btn"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#000"
+            android:textSize="12sp"
+            android:typeface="monospace"
+            android:layout_marginTop="30sp"
+            android:text="@string/moto"
+            android:id="@+id/textView"
+            android:layout_gravity="center_horizontal" />
+
+        <ImageView
+            android:layout_width="20sp"
+            android:contentDescription="connection_status"
+            android:layout_height="20sp"
+            android:layout_marginTop="10sp"
+            android:id="@+id/connect_status"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
+
 </RelativeLayout>
