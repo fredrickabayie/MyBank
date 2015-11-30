@@ -48,7 +48,7 @@ public class SessionManager {
     /**
      * Create Login session
      * */
-    public void createLoginSession(String name, String studentID, String dp, String balance){
+    public void createLoginSession(String name, String studentID){
         // Storing Login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
@@ -58,9 +58,9 @@ public class SessionManager {
         // Storing email in pref
         editor.putString(KEY_STUDENTID, studentID);
 
-        editor.putString(KEY_DP, dp);
-
-        editor.putString(KEY_BALANCE, balance);
+//        editor.putString(KEY_DP, dp);
+//
+//        editor.putString(KEY_BALANCE, balance);
 
         // commit changes
         editor.commit();
@@ -102,9 +102,9 @@ public class SessionManager {
         // user email id
         user.put(KEY_STUDENTID, pref.getString(KEY_STUDENTID, null));
 
-        user.put(KEY_DP, pref.getString(KEY_DP, null));
-
-        user.put(KEY_BALANCE, pref.getString(KEY_BALANCE, null));
+//        user.put(KEY_DP, pref.getString(KEY_DP, null));
+//
+//        user.put(KEY_BALANCE, pref.getString(KEY_BALANCE, null));
 
         // return user
         return user;
