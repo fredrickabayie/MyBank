@@ -41,7 +41,8 @@ public class BranchAtm extends FragmentActivity implements OnMapReadyCallback {
 
         // Add a marker in Sydney and move the camera
         LatLng ashesi = new LatLng(5.759592, -0.219396);
-        mMap.addMarker(new MarkerOptions().position(ashesi).title("ATM"));
+        mMap.addMarker(new MarkerOptions().position(ashesi).title("Ecobank ATM").snippet("Ashesi"))
+        ;
         mMap.moveCamera(CameraUpdateFactory.newLatLng(ashesi));
     }
 }

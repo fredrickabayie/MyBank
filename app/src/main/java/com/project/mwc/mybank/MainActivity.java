@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //    private static final String TAG_USERDP = "dp";
 //    private static final String TAG_ACNUMBER = "user_acnumber";
     private static final String TAG_ID = "user_id";
+    private String bank = null;
 
     SessionManager sessionManager;
 
@@ -50,14 +51,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         spinner = (Spinner)findViewById(R.id.bank);
         spinner.setOnItemSelectedListener(this);
-//        spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
-//        String[] items = new String[]{"Beige Capital", "Ecobank"};
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-//        spinner.setAdapter(adapter);
-
-//        String selected = spinner.getOnItemSelectedListener().toString();
 
         sessionManager = new SessionManager(getApplicationContext());
 
@@ -80,7 +76,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        System.out.println(spinner.getItemAtPosition(position).toString());
+         bank = spinner.getItemAtPosition(position).toString();
+        System.out.println(bank);
     }
 
     @Override
@@ -173,6 +170,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     finish();
                 }
                 else {
+                    if (pDialog.isShowing())
+                        pDialog.dismiss();
                     String msg = jsonObj.getString("message");
 //                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
 
@@ -203,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(username.getText().toString().trim().length() > 0 && password.getText().toString().trim().length() > 0) {
             task.execute("http://cs.ashesi.edu.gh/~csashesi/class2016/fredrick-abayie/mobileweb/mybank/php/mybank.php?cmd=user_login&username="
-                    +username.getText().toString().trim()+"&password="+password.getText().toString().trim());
+                    +username.getText().toString().trim()+"&password="+password.getText().toString().trim()+"&bank="+bank);
         } else {
             username.setError("Please enter your username");
             password.setError("Please enter your password");
