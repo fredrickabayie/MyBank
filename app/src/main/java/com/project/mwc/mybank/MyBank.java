@@ -42,6 +42,15 @@ public class MyBank extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        String title = "Home";
+        Fragment frag = new Balance();
+//        title = getString(R.string.title_menu);
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, frag);
+        fragmentTransaction.commit();
+        getSupportActionBar().setTitle(title);
     }
 
     @Override

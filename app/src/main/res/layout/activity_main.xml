@@ -33,6 +33,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/bank"
+            android:prompt="@string/bank_prompt"
+            android:entries="@array/bank_list"
             android:layout_gravity="center_horizontal" />
 
         <EditText

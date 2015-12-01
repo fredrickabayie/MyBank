@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,11 +28,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     Button login_btn;
     EditText username, password;
-//    ProgressBar progressBar;
+    Spinner spinner;
 
     private static final String TAG_RESULT = "result";
     private static final String TAG_USERNAME = "username";
@@ -49,10 +50,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Spinner dropdown = (Spinner)findViewById(R.id.bank);
-        String[] items = new String[]{"Beige Capital", "Barclays", "Ecobank"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        dropdown.setAdapter(adapter);
+        spinner = (Spinner)findViewById(R.id.bank);
+        spinner.setOnItemSelectedListener(this);
+//        spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+//        String[] items = new String[]{"Beige Capital", "Ecobank"};
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+//        spinner.setAdapter(adapter);
+
+//        String selected = spinner.getOnItemSelectedListener().toString();
 
         sessionManager = new SessionManager(getApplicationContext());
 
@@ -63,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         password = (EditText) findViewById(R.id.password);
 
         relativeLayout = (RelativeLayout) findViewById(R.id.relativelayout);
-
     }
 
 
@@ -72,6 +76,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (view == login_btn) {
             readWebpage(view);
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        System.out.println(spinner.getItemAtPosition(position).toString());
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
 
@@ -135,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          */
         @Override
         protected void onPostExecute(String result) {
+            login_btn.setEnabled(true);
             try {
                 JSONObject jsonObj = new JSONObject(result);
 
@@ -148,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                    String balance = jsonObj.getString(TAG_BALANCE);
 //                    System.out.println(pic);
 
-                    sessionManager.createLoginSession(user, id);
+                    sessionManager.createLoginSession(id, user);
 
                     if (pDialog.isShowing())
                         pDialog.dismiss();

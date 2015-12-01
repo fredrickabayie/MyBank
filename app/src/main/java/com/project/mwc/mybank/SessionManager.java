@@ -23,7 +23,7 @@ public class SessionManager {
     int PRIVATE_MODE = 0;
 
     // Sharedpref file name
-    private static final String PREF_NAME = "OngaPref";
+    private static final String PREF_NAME = "MyBankPref";
 
     // All Shared Preferences Keys
     private static final String IS_LOGIN = "IsLoggedIn";
@@ -32,7 +32,7 @@ public class SessionManager {
     public static final String KEY_NAME = "name";
 
     // Email address (make variable public to access from outside)
-    public static final String KEY_STUDENTID = "studentID";
+    public static final String KEY_CUSTOMERID = "customerID";
 
     public static final String KEY_DP = "dp";
 
@@ -48,7 +48,7 @@ public class SessionManager {
     /**
      * Create Login session
      * */
-    public void createLoginSession(String name, String studentID){
+    public void createLoginSession(String customerID, String name){
         // Storing Login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
@@ -56,7 +56,7 @@ public class SessionManager {
         editor.putString(KEY_NAME, name);
 
         // Storing email in pref
-        editor.putString(KEY_STUDENTID, studentID);
+        editor.putString(KEY_CUSTOMERID, customerID);
 
 //        editor.putString(KEY_DP, dp);
 //
@@ -100,7 +100,7 @@ public class SessionManager {
         user.put(KEY_NAME, pref.getString(KEY_NAME, null));
 
         // user email id
-        user.put(KEY_STUDENTID, pref.getString(KEY_STUDENTID, null));
+        user.put(KEY_CUSTOMERID, pref.getString(KEY_CUSTOMERID, null));
 
 //        user.put(KEY_DP, pref.getString(KEY_DP, null));
 //

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MyBank</string>
     <string name="title_activity_my_bank">MyBank</string>
@@ -13,6 +14,12 @@
     <string name="password_hint">Password</string>
     <string name="moto">Connecting Your Banks</string>
     <string name="remember_login">Remember Login</string>
+    <string name="bank_prompt">Please select your bank</string>
+    <string-array name="bank_list">
+        <item>Please select your bank…</item>
+        <item>Ecobank</item>
+        <item>Beige</item>
+    </string-array>
 
     <!-- Navigation drawer header-->
     <string name="nav_username">User fullname</string>
@@ -35,4 +42,5 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    
 </resources>

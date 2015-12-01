@@ -35,11 +35,12 @@ import java.util.List;
  * Activities that contain this fragment must implement the
  * {@link Balance.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Balance#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class Balance extends ListFragment {
     // TODO: Rename parameter arguments, choose names that match
+
+    SessionManager sessionManager;
+    String user_id = null;
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -47,6 +48,10 @@ public class Balance extends ListFragment {
     private static final String TAG_RESULTID = "result";
     private static final String TAG_BALANCE = "balance";
     private static final String TAG_AMOUNT = "amount";
+    private static final String TAG_ACCOUNTTYPE = "account_type";
+    private static final String TAG_ACCOUNTNO = "account_no";
+    private static final String TAG_BRANCH = "branch";
+    private static final String TAG_PERIOD = "period";
 
 
     ArrayList<HashMap<String, String>> balanceList;
@@ -67,48 +72,36 @@ public class Balance extends ListFragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Balance.
-     */
+
     // TODO: Rename and change types and number of parameters
-    public static Balance newInstance(String param1, String param2) {
-        Balance fragment = new Balance();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+//    public static Balance newInstance(String param1, String param2) {
+//        Balance fragment = new Balance();
+//        Bundle args = new Bundle();
+//        args.putString(ARG_PARAM1, param1);
+//        args.putString(ARG_PARAM2, param2);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+//        if (getArguments() != null) {
+            sessionManager = new SessionManager(getActivity().getApplicationContext());
+            HashMap<String, String> user = sessionManager.getUserDetails();
+            user_id = user.get(SessionManager.KEY_CUSTOMERID);
             balanceList = new ArrayList<>();
-
-        }
+//        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        loadHistory();
-        return inflater.inflate(R.layout.fragment_balance, container, false);
-    }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        View rootView = inflater.inflate(R.layout.fragment_balance, container, false);
+
+        loadHistory();
+        return rootView;
     }
 
     @Override
@@ -146,7 +139,7 @@ public class Balance extends ListFragment {
     private void loadHistory ( ) {
         DownloadWebPageTask task = new DownloadWebPageTask();
 //        historyList.clear();
-        task.execute("http://cs.ashesi.edu.gh/~csashesi/class2016/fredrick-abayie/mobileweb/onga_mwc/php/onga.php?cmd=onga_mwc_orders_history&user_id=19882016");
+        task.execute("http://cs.ashesi.edu.gh/~csashesi/class2016/fredrick-abayie/mobileweb/mybank/php/mybank.php?cmd=check_balance&user_id="+user_id);
     }
 
 
@@ -173,7 +166,6 @@ public class Balance extends ListFragment {
                             new InputStreamReader(in));
                     String s = "";
                     while ((s = buffer.readLine()) != null) {
-                        System.out.println(s);
                         response += s;
                     }
                     System.out.println(response);
@@ -191,28 +183,27 @@ public class Balance extends ListFragment {
                     String resultID = jsonObject.getString(TAG_RESULTID);
                     if(resultID.equals("1")) {
                         balances = jsonObject.getJSONArray(TAG_BALANCE);
-//                        for (int i = 0; i < users.length(); i++) {
-//                            JSONObject jObj = users.getJSONObject(i);
+                        for (int i = 0; i < balances.length(); i++) {
+                            JSONObject jObj = balances.getJSONObject(i);
 
-                            String balance = jsonObject.getString(TAG_BALANCE);
-//                            String meal_price = "GH\u20B5 "+jObj.getString(TAG_MEALPRICE);
-//                            String order_date = jObj.getString(TAG_ORDERDATE);
-//                            String order_time = jObj.getString(TAG_ORDERTIME);
-//                            String order_status = convert_status(jObj.getString(TAG_ORDERSTATUS));
+                            String account_type = jObj.getString(TAG_ACCOUNTTYPE);
+                            String amount = "GH\u20B5 "+jObj.getString(TAG_AMOUNT);
+                            String account_no = jObj.getString(TAG_ACCOUNTNO);
+                            String branch = jObj.getString(TAG_BRANCH);
+                            String period = jObj.getString(TAG_PERIOD);
 
-                            HashMap<String, String> history = new HashMap<>();
+                            HashMap<String, String> balance = new HashMap<>();
 
-                            history.put(TAG_BALANCE, balance);
-//                            history.put(TAG_MEALPRICE, meal_price);
-//                            history.put(TAG_ORDERDATE, order_date);
-//                            history.put(TAG_ORDERTIME, order_time);
-//                            history.put(TAG_ORDERSTATUS, order_status);
+                            balance.put(TAG_AMOUNT, amount);
+                            balance.put(TAG_ACCOUNTTYPE, account_type);
+                            balance.put(TAG_ACCOUNTNO, account_no);
+                            balance.put(TAG_BRANCH, branch);
+                            balance.put(TAG_PERIOD, period);
 
 
-                            balanceList.add(history);
-                            System.out.println(balanceList);
+                            balanceList.add(balance);
                         }
-//                    }
+                    }
 
                 } catch (JSONException jsonex) {
                     jsonex.printStackTrace();
@@ -243,8 +234,10 @@ public class Balance extends ListFragment {
 //            setListAdapter(null);
             ListAdapter adapter = new SimpleAdapter(
                     getActivity(), balanceList,
-                    R.layout.balance_list, new String[] { TAG_BALANCE },
-                    new int[] { R.id.list_balance } );
+                    R.layout.balance_list, new String[] { TAG_AMOUNT, TAG_ACCOUNTTYPE, TAG_ACCOUNTNO,
+            TAG_BRANCH, TAG_PERIOD },
+                    new int[] { R.id.list_amount, R.id.list_account_type, R.id.list_account_no,
+                    R.id.list_branch, R.id.list_period } );
 
             setListAdapter(adapter);
 //            swipeRefreshLayout.setRefreshing(false);
