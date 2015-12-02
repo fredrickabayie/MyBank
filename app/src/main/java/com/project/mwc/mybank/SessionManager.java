@@ -71,9 +71,9 @@ public class SessionManager {
      * If false it will redirect user to Login page
      * Else won't do anything
      * */
-    public boolean checkLogin(){
+    public boolean checkLogin() {
         // Check Login status
-        if(!this.isLoggedIn()){
+        if(!this.isLoggedIn()) {
             // user is not logged in redirect him to Login Activity
             Intent i = new Intent(_context, MainActivity.class);
             // Closing all the Activities
@@ -94,8 +94,8 @@ public class SessionManager {
     /**
      * Get stored session data
      * */
-    public HashMap<String, String> getUserDetails(){
-        HashMap<String, String> user = new HashMap<String, String>();
+    public HashMap<String, String> getUserDetails() {
+        HashMap<String, String> user = new HashMap<>();
         // user name
         user.put(KEY_NAME, pref.getString(KEY_NAME, null));
 

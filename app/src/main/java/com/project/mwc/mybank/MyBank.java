@@ -21,7 +21,8 @@ import android.widget.Toast;
 
 public class MyBank extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        Statement.OnFragmentInteractionListener, Balance.OnFragmentInteractionListener {
+        Statement.OnFragmentInteractionListener, Balance.OnFragmentInteractionListener,
+        Contact.OnFragmentInteractionListener {
 
     SessionManager sessionManager;
 
@@ -34,6 +35,21 @@ public class MyBank extends AppCompatActivity
 
         sessionManager = new SessionManager(getApplicationContext());
 
+        if (sessionManager.checkLogin()) {
+            finish();
+            System.out.println("In if "+sessionManager.checkLogin());
+        } else {
+            System.out.println("In else "+sessionManager.checkLogin());
+            String title = "Home";
+            Fragment frag = new Balance();
+//        title = getString(R.string.title_menu);
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container, frag);
+            fragmentTransaction.commit();
+            getSupportActionBar().setTitle(title);
+        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -42,15 +58,6 @@ public class MyBank extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        String title = "Home";
-        Fragment frag = new Balance();
-//        title = getString(R.string.title_menu);
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.container, frag);
-        fragmentTransaction.commit();
-        getSupportActionBar().setTitle(title);
     }
 
     @Override
@@ -111,7 +118,9 @@ public class MyBank extends AppCompatActivity
         } else if (id == R.id.nav_help) {
 
         } else if (id == R.id.nav_contactUs) {
-
+            Contact contact = new Contact();
+            contact.getFragmentManager();
+            title = "ContactUs";
         }
 
         if (fragment != null) {
